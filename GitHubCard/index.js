@@ -24,7 +24,7 @@
           user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = ['tetondan','dustinmyers','justsml','luishrd','bigknell'];
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
@@ -53,3 +53,84 @@ const followersArray = [];
   luishrd
   bigknell
 */
+
+// step1
+
+axios.get('https://api.github.com/users/Evelyn312')
+    .then( response => {
+        let newCard = cardMaker(response.data);
+        let cardsLoc = document.getElementsByClassName('cards');
+        cardsLoc[0].appendChild(newCard);
+        followersArray.forEach((follower) => {
+          axios.get(`https://api.github.com/users/${follower}`)
+            .then( response => {
+              let newCard = cardMaker(response.data);
+              let cardsLoc = document.getElementsByClassName('cards');
+              cardsLoc[0].appendChild(newCard);
+            })
+            .catch( err => {
+              console.log("There is an error");
+            })
+        });
+    })
+    .catch( err => {
+        console.log("There is an error");
+    })
+
+//step 3
+
+function cardMaker (userObj){
+    let newUser = document.createElement('div');
+    newUser.classList.add('card');
+
+    let userImage = document.createElement('img');
+    newUser.appendChild(userImage);
+    
+    let nameOfUser = document.createElement('h3');
+    nameOfUser.classList.add('name');
+    nameOfUser.textContent = `${userObj.name}`
+    newUser.appendChild(nameOfUser);
+
+    let usernameOfUser = document.createElement('p');
+    usernameOfUser.classList.add('username');
+    usernameOfUser.textContent =`${userObj.login}`
+    newUser.appendChild(usernameOfUser);
+    
+    let locationOfUser = document.createElement('p');
+    newUser.appendChild(locationOfUser);
+    
+    let profileOfUser = document.createElement('p');
+    profileOfUser.textContent = `Profile:`;
+    newUser.appendChild(profileOfUser);
+
+    let addressOfUser = document.createElement('a');
+    profileOfUser.appendChild(addressOfUser);
+
+    let followersOfUser = document.createElement('p');
+    followersOfUser.textContent = `Followers: ${userObj.followers}`;
+    newUser.appendChild(followersOfUser);
+
+    let followingOfUser = document.createElement('p');
+    followingOfUser.textContent = `Following: ${userObj.following}`;
+    newUser.appendChild(followingOfUser);
+
+    let bioOfUser = document.createElement('p');
+    bioOfUser.textContent = `Bio: ${userObj.bio}`;
+    newUser.appendChild(bioOfUser);
+
+    return newUser;
+};
+
+// followersArray.forEach((follower) => {
+//   axios.get(`https://api.github.com/users/${follower}`)
+//     .then( response => {
+//       let newCard = cardMaker(response.data);
+//       let cardsLoc = document.getElementsByClassName('cards');
+//       cardsLoc[0].appendChild(newCard);
+//     })
+//     .catch( err => {
+//       console.log("There is an error");
+//     })
+// });
+
+
