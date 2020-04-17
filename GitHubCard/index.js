@@ -53,3 +53,68 @@ const followersArray = [];
   luishrd
   bigknell
 */
+
+// step1
+
+axios.get('https://api.github.com/users/Evelyn312')
+    .then( response => {
+        console.log('this is the response', response);
+        console.log(response.data);
+        let newCard = cardMaker(response.data);
+        let containerLoc = document.getElementsByClassName('container');
+        containerLoc[0].appendChild(newCard);
+    })
+    .catch( err => {
+        console.log("There is an error");
+    })
+
+//step 3
+
+function cardMaker (userObj){
+    let newUser = document.createElement('div');
+    newUser.classList.add('card');
+
+    let userImage = document.createElement('img');
+    newUser.appendChild(userImage);
+    
+    let nameOfUser = document.createElement('h3');
+    nameOfUser.classList.add('name');
+    newUser.appendChild(nameOfUser);
+
+    let usernameOfUser = document.createElement('p');
+    usernameOfUser.classList.add('username');
+    newUser.appendChild(usernameOfUser);
+    
+    // <p>Location: {users location}</p>
+    // <p>Profile:  
+    //   <a href={address to users github page}>{address to users github page}</a>
+    // </p>
+    // <p>Followers: {users followers count}</p>
+    // <p>Following: {users following count}</p>
+    // <p>Bio: {users bio}</p>
+    let locationOfUser = document.createElement('p');
+    newUser.appendChild(locationOfUser);
+    
+    let profileOfUser = document.createElement('p');
+    profileOfUser.textContent = `Profile:`;
+    newUser.appendChild(profileOfUser);
+
+    let addressOfUser = document.createElement('a');
+    profileOfUser.appendChild(addressOfUser);
+
+    let followersOfUser = document.createElement('p');
+    followersOfUser.textContent = `Followers: ${userObj.followers}`;
+    newUser.appendChild(followersOfUser);
+
+    let followingOfUser = document.createElement('p');
+    followingOfUser.textContent = `Following: ${userObj.following}`;
+    newUser.appendChild(followingOfUser);
+
+    let bioOfUser = document.createElement('p');
+    bioOfUser.textContent = `Bio: ${userObj.bio}`;
+    newUser.appendChild(bioOfUser);
+
+    return newUser;
+};
+
+
