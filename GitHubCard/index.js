@@ -24,7 +24,7 @@
           user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = ['tetondan','dustinmyers','justsml','luishrd','bigknell'];
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
@@ -58,11 +58,20 @@ const followersArray = [];
 
 axios.get('https://api.github.com/users/Evelyn312')
     .then( response => {
-        console.log('this is the response', response);
-        console.log(response.data);
         let newCard = cardMaker(response.data);
-        let containerLoc = document.getElementsByClassName('container');
-        containerLoc[0].appendChild(newCard);
+        let cardsLoc = document.getElementsByClassName('cards');
+        cardsLoc[0].appendChild(newCard);
+        followersArray.forEach((follower) => {
+          axios.get(`https://api.github.com/users/${follower}`)
+            .then( response => {
+              let newCard = cardMaker(response.data);
+              let cardsLoc = document.getElementsByClassName('cards');
+              cardsLoc[0].appendChild(newCard);
+            })
+            .catch( err => {
+              console.log("There is an error");
+            })
+        });
     })
     .catch( err => {
         console.log("There is an error");
@@ -79,19 +88,14 @@ function cardMaker (userObj){
     
     let nameOfUser = document.createElement('h3');
     nameOfUser.classList.add('name');
+    nameOfUser.textContent = `${userObj.name}`
     newUser.appendChild(nameOfUser);
 
     let usernameOfUser = document.createElement('p');
     usernameOfUser.classList.add('username');
+    usernameOfUser.textContent =`${userObj.login}`
     newUser.appendChild(usernameOfUser);
     
-    // <p>Location: {users location}</p>
-    // <p>Profile:  
-    //   <a href={address to users github page}>{address to users github page}</a>
-    // </p>
-    // <p>Followers: {users followers count}</p>
-    // <p>Following: {users following count}</p>
-    // <p>Bio: {users bio}</p>
     let locationOfUser = document.createElement('p');
     newUser.appendChild(locationOfUser);
     
@@ -116,5 +120,17 @@ function cardMaker (userObj){
 
     return newUser;
 };
+
+// followersArray.forEach((follower) => {
+//   axios.get(`https://api.github.com/users/${follower}`)
+//     .then( response => {
+//       let newCard = cardMaker(response.data);
+//       let cardsLoc = document.getElementsByClassName('cards');
+//       cardsLoc[0].appendChild(newCard);
+//     })
+//     .catch( err => {
+//       console.log("There is an error");
+//     })
+// });
 
 
