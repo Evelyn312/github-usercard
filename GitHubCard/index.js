@@ -80,43 +80,49 @@ axios.get('https://api.github.com/users/Evelyn312')
 //step 3
 
 function cardMaker (userObj){
+    
     let newUser = document.createElement('div');
     newUser.classList.add('card');
 
     let userImage = document.createElement('img');
+    userImage.src = `${userObj.avatar_url}`;
     newUser.appendChild(userImage);
+
+    let cardCon = document.createElement('div');
+    cardCon.classList.add('card-info');
+    newUser.appendChild(cardCon);
     
     let nameOfUser = document.createElement('h3');
     nameOfUser.classList.add('name');
     nameOfUser.textContent = `${userObj.name}`
-    newUser.appendChild(nameOfUser);
+    cardCon.appendChild(nameOfUser);
 
     let usernameOfUser = document.createElement('p');
     usernameOfUser.classList.add('username');
     usernameOfUser.textContent =`${userObj.login}`
-    newUser.appendChild(usernameOfUser);
+    cardCon.appendChild(usernameOfUser);
     
     let locationOfUser = document.createElement('p');
-    newUser.appendChild(locationOfUser);
+    cardCon.appendChild(locationOfUser);
     
     let profileOfUser = document.createElement('p');
     profileOfUser.textContent = `Profile:`;
-    newUser.appendChild(profileOfUser);
+    cardCon.appendChild(profileOfUser);
 
     let addressOfUser = document.createElement('a');
     profileOfUser.appendChild(addressOfUser);
 
     let followersOfUser = document.createElement('p');
     followersOfUser.textContent = `Followers: ${userObj.followers}`;
-    newUser.appendChild(followersOfUser);
+    cardCon.appendChild(followersOfUser);
 
     let followingOfUser = document.createElement('p');
     followingOfUser.textContent = `Following: ${userObj.following}`;
-    newUser.appendChild(followingOfUser);
+    cardCon.appendChild(followingOfUser);
 
     let bioOfUser = document.createElement('p');
     bioOfUser.textContent = `Bio: ${userObj.bio}`;
-    newUser.appendChild(bioOfUser);
+    cardCon.appendChild(bioOfUser);
 
     return newUser;
 };
